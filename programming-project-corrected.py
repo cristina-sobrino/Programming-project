@@ -306,9 +306,7 @@ def angle_math(coord):
         r_bc_norm = np.sqrt((float(coord[atomB]) - float(coord[atomC]))**2 + ( float(coord[atomB+1]) - float(coord[atomC+1]))**2 + ( float(coord[atomB+2]) - float(coord[atomC+2]) )**2 )
 
         theta = (np.arccos(numerator/(r_ba_norm * r_bc_norm)))
-        #theta_degrees = theta*(180/np.pi)
         thetas.append(theta)
-#       thetas_degrees.append(theta_degrees)
 
         m += 3
     return thetas, r_ba_lt, r_bc_lt
@@ -376,32 +374,6 @@ def dihedral_def():
 dihedral_mat, dihedral_v = dihedral_def()
 
 
-# def charact_dihe():
-#     """ This function computes a list in a vector form with all the atom indexes of the dihedral planes.
-#     Returns:
-#         dihedral_vector (List[float])
-
-#     """
-#     dihe_atoms = [] ; dihedral_vector = []
-#     for n in range(len(dihedral_mat)):
-#         a1 = int(dihedral_mat[n][0])
-#         a2 = int(dihedral_mat[n][1])
-#         a3 = int(dihedral_mat[n][2])
-#         a4 = int(dihedral_mat[n][3])
-
-#         dihe_atoms.append([atoms[a1-1], atoms[a2-1], atoms[a3-1], atoms[a4-1]])
-
-#         dihedral_vector.append(a1-1)
-#         dihedral_vector.append(a2-1)
-#         dihedral_vector.append(a3-1)
-#         dihedral_vector.append(a4-1)
-
-#     return dihedral_vector
-
-# #     print(dihe_atoms)
-# dihedral_v = charact_dihe()
-
-
 def dihe_energy(coord):
     """This function computes the torsional contribution to the energy
     Inputs: 
@@ -448,8 +420,6 @@ def dihe_energy(coord):
         sin = np.dot(r_bc,v)/(r_bc_norm*t_norm*u_norm)
 
         phi = np.arctan2(sin,cos)
-        # phi_d = phi*(180/np.pi)
-        # phi_list.append(phi_d)
         phi_list.append(phi)
 
         #the energy:
@@ -694,7 +664,6 @@ def grad_stret(real_bonds_m, v_rba):
                     stret_x += -g_list_stret[j][0]
                     stret_y += -g_list_stret[j][1]
                     stret_z += -g_list_stret[j][2]
-                    # print("atom", at_b[j]," contributes:", -g_list_stret[j][0], -g_list_stret[j][1], -g_list_stret[j][2])
             for k in range(len(at_a)):
 
                 if el == at_a[k]:
@@ -702,11 +671,9 @@ def grad_stret(real_bonds_m, v_rba):
                     stret_x += g_list_stret[k][0]
                     stret_y += g_list_stret[k][1]
                     stret_z += g_list_stret[k][2]
-                    # print("this other atom", at_a[k]," contributes:", g_list_stret[k][0], g_list_stret[k][1], g_list_stret[k][2])
 
         if stret_x != 0 or stret_y != 0 or stret_z != 0:
             stret_list.append([float(stret_x), float(stret_y), float(stret_z)])
-    # print("STRET",stret_list)
 
     return stret_list
 
@@ -836,7 +803,6 @@ def bending_grad(grad_list_a, grad_list_b, grad_list_c):
         # if cont_x != 0 or cont_y != 0 or cont_z != 0:
             cont_list.append([cont_x, cont_y, cont_z])
 
-        # cont_x = 0
     return cont_list
 
 bending_grad_cont = bending_grad(grad_list_a, grad_list_b, grad_list_c)
@@ -956,7 +922,6 @@ def torsion_grad(grad_t_a, grad_t_b, grad_t_c, grad_t_d):
         if elemento not in elemento_list:
             elemento_list.append(elemento)
 
-            # print(elemento)
             for j in range(len(at_b1)):
 
                 if int(elemento) == at_b1[j]:
@@ -981,7 +946,6 @@ def torsion_grad(grad_t_a, grad_t_b, grad_t_c, grad_t_d):
                     cont_x += grad_t_d[m][0]
                     cont_y += grad_t_d[m][1]
                     cont_z += grad_t_d[m][2]
-                    # print("i add in D", elemento, at_d1[m],-grad_t_d[m][0] , cont_x)
 
         # if cont_x != 0 or cont_y != 0 or cont_z != 0:
             cont_list.append([cont_x, cont_y, cont_z])
@@ -1087,7 +1051,6 @@ def grad_n(coords_i):
     It returns a vector-like list of the gradients for each atom. """
 
     #We compute the dihedrals
-    # E_tot_dihedraln, E_dihe_ltn, phi_lt, t_rab, t_rbc, t_rcd, t_rac, t_rbd, phi_rad = dihe_energy(coords_i)
     E_tot_dihedraln, E_dihe_ltn, lt, phi_rad = dihe_energy(coords_i)
 
     #Computation of the bonds
@@ -1095,7 +1058,6 @@ def grad_n(coords_i):
     stretch_grad_cont = grad_stret(real_bondsn, v_rba)
 
     #Computation of the angles
-    # theta_an, r_ba_list, r_bc_list, at_A_list, at_B_list, at_C_list = angle_math(coords_i)
     theta_an, r_ba_list, r_bc_list = angle_math(coords_i)
 
     grad_list_a, grad_list_b, grad_list_c = grad_angles(r_ba_list,r_bc_list,theta_an)
@@ -1127,7 +1089,6 @@ def grad_n(coords_i):
             torsion_grad_list[i][2] + pair_vdw_grad[i][3]
 
 
-        # tot_gr.append([x_val_gr, y_val_gr, z_val_gr])
         tot_gr_list.append(x_val_gr)
         tot_gr_list.append(y_val_gr)
         tot_gr_list.append(z_val_gr)
@@ -1148,7 +1109,6 @@ if not pair_vdw_grad:
 
 for i in range(len(atoms)):
 
-    # torsion_grad = torsion_grad_list[i] if i < len(torsion_grad_list) else [0, 0, 0]
 
     x_gr = bending_grad_cont[i][0] + stretch_grad_cont[i][0] + torsion_grad_list[i][0] + pair_vdw_grad[i][1]
     y_gr = bending_grad_cont[i][1] + stretch_grad_cont[i][1] + torsion_grad_list[i][1] + pair_vdw_grad[i][2]
@@ -1159,7 +1119,6 @@ for i in range(len(atoms)):
     tot_gr_list.append(y_gr)
     tot_gr_list.append(z_gr)
 
-# print(tot_gr)
 
 tot_gr_list = grad_n(coord_m)
 
@@ -1167,19 +1126,7 @@ tot_gr_list = grad_n(coord_m)
 #······        BFGS ALGORITHM       ·······
 #··········································
 
-#First, we build the initial approximate Hessian matrix (diagonal elements equal to 1/600)
-# M = np.zeros((len(coord_m),len(coord_m))) #square matrix of 3Nx3N
 
-
-# M[:len(coord_m), :len(coord_m)] = np.eye(len(coord_m)) * (1/600)
-
-
-#Secondly, we define the search direction
-# pk = -np.matmul(M,tot_gr_list)
-
-#thirdly, line search: α is usually chosen so that V (rk + αpk) reaches a minimum along the direction pk
-
-#new set of coordinates, we evaluate the wolfe conditions
 a = time.time()
 
 output_file2 = name.replace(".mol2", "") + "_CSF_out2.out"
@@ -1488,7 +1435,6 @@ def wilson_mat(real_bonds_m, v_rba, bend_der, deriv_tor):
         #stretching elements
 
         j_2 = int(j/2)
-        # print(j_2)
         element1 = int(bond_vector[j]) - 1
         element2 = int(bond_vector[j+1]) -1
         norm_v_rba = linalg.norm(v_rba[j_2])  
@@ -1502,7 +1448,6 @@ def wilson_mat(real_bonds_m, v_rba, bend_der, deriv_tor):
     
 
     stret_elements=len(real_bonds)
-    # print(stret_elements)
 
     #bending elements
     for k in range(0,int(len(angle_list)/3)):
@@ -1557,8 +1502,6 @@ def wilson_mat(real_bonds_m, v_rba, bend_der, deriv_tor):
         b_s[l_4][element_d*3+2] =  deriv_tor[(l)*4+3][2]
 
 
-    # for i in range(len(b_s)):
-        # print("Row", i+1, b_s[i])
     return b_s
 
 B = wilson_mat(real_bonds, v_rba, bend_dern, deriv_torn)
@@ -1588,10 +1531,6 @@ def bgt(Bw):
     eigenvaluesG, eigenvectorsG = np.linalg.eigh(G)
 
     eigenvaluesG[np.abs(eigenvaluesG) < threshold] = 0
-    # print(eigenvaluesG)
-
-    # V = eigenvaluesG
-    # Vt = np.transpose(V)
 
     Lambda_inv_values = []
 
@@ -1709,8 +1648,6 @@ with open(output_file3, 'w', encoding='utf-8') as file, open('opt-internal.molde
 
             x_new = xk + Bt @ G_inverse @ sqk
             q_current = cart_to_internal(x_new)
-            # print("predicted dx", Bt @ G_inverse @ sqk)
-            # print("  ", file=file)
             print("Current set of internals coordinates", file=file)
             for i in q_current:
                 print(f"{i:.4f}", end="   ", file=file)
@@ -1720,7 +1657,6 @@ with open(output_file3, 'w', encoding='utf-8') as file, open('opt-internal.molde
             qk = q_current.copy()
 
             max_x = max(abs(x_new-xk))
-            # print("max x", max_x, file=file)
             print(file=file)
             print("                             Value    Threshold    Converged?", file=file)
             if max_x > 0.00001:
@@ -1761,7 +1697,6 @@ with open(output_file3, 'w', encoding='utf-8') as file, open('opt-internal.molde
 
         print(f"{i+1:<6}  {elemento:^10} {x_val_int:>15.4f} {y_val_int:>15.4f} {z_val_int:>15.4f}", file=file)
     print(file=file)
-    # print("Potential energy at input structure ", f"{ene_tot(coord_m):10.8f} Kcal/mol", file=file)
 
     #Initial guess for the hessian
     M = np.zeros((int(n_internals),int(n_internals))) #square matrix of 3Nx3N
@@ -1802,7 +1737,6 @@ with open(output_file3, 'w', encoding='utf-8') as file, open('opt-internal.molde
         Bt = np.transpose(B1)
 
         B_inverse, G_inver = bgt(B1)
-        # print("G",G_inver)
         cartesian_gradient = grad_n(xk0)
         internal_gradient1 = G_inver @ B1 @ cartesian_gradient
         print("Gradient in terms of the internal coordinates:", file=file)
@@ -1810,7 +1744,6 @@ with open(output_file3, 'w', encoding='utf-8') as file, open('opt-internal.molde
             print(f"{i:.6f}", end="   ", file=file)
         print(file=file)
 
-        # print("internal gradient", internal_gradient1, file=file)
 
         #STEP 2
         pk_i = - M @ internal_gradient1
@@ -1929,7 +1862,6 @@ with open(output_file3, 'w', encoding='utf-8') as file, open('opt-internal.molde
 
 
     print("                         FINAL STRUCTURE:", file=file)
-    # print(file=file)
     print(f"{'Number':^6} {'Element':^10} {'X':^15} {'Y':^15} {'Z':^15}", file=file)
     print("·" * 68, file=file)
 
@@ -1947,7 +1879,6 @@ with open(output_file3, 'w', encoding='utf-8') as file, open('opt-internal.molde
     print("Optimization in internal coordinates took", eto, "seconds")
 
 
-# print("XP",wilson_b(xp))
 
 #··········································
 #······  FORMATTING OF THE OUTPUT   ·······
@@ -2204,124 +2135,3 @@ with open('output.txt', 'w', encoding='utf-8') as file:
     print(f"{'·································'.center(60)}", file=file)
     print(f"{'···     NORMAL TERMINATION    ···'.center(60)}", file=file)
     print(f"{'·································'.center(60)}", file=file)
-
-
-# with open('output.txt', 'w') as file:
-#     sys.stdout = file
-
-
-#     def cartesian_format(atoms_inp,coord_inp):
-#         print(f"{'·································'.center(60)}")
-#         print(f"{'···  Input orientation in Å  ···'.center(60)}")
-#         print(f"{'·································'.center(60)}")
-#         print(" ")
-#         # print(" ")
-#         print("  ")
-#         print(f"{'Number':^6} {'Element':^10} {'X':^15} {'Y':^15} {'Z':^15}")
-#         print("·" * 68) ; i = 0
-
-#         for i in range(len(atoms_inp)):
-#             elemento = atoms_inp[i]
-#             x_val = coord_inp[i*3]
-#             y_val = coord_inp[i*3+1]
-#             z_val = coord_inp[i*3+2]
-
-#             print(f"{i+1:<6}  {elemento:^10} {x_val:>15.4f} {y_val:>15.4f} {z_val:>15.4f}")
-#             i += 1
-
-#     cartesian_format(atoms, coord)
-
-#     def bonds_format(bonds_lt, atoms_lt, real_bond, E_stret_lt):
-#         print(" ",  file=file)
-#         # print(" ")
-#         print("  ",  file=file)
-#         print(f"{'·································'.center(60)}",  file=file)
-#         print(f"{'···        Bond matrix        ···'.center(60)}",  file=file)
-#         print(f"{'·································'.center(60)}")
-#         print(" ")
-#         # print(" ")
-#         print("  ")
-#         print(f"{'Bonded centers':^20} {'Distance (Å)':^10} {'Energy contribution (kcal/mol)':^10}")
-#         print("·" * 60) ; i = 0
-
-#         for i in range(len(bonds_lt)):
-#             e1 = int(bonds_lt[i][0])
-#             e2 = int(bonds_lt[i][1])
-#             e1_s = atoms_lt[e1-1]
-#             e2_s = atoms_lt[e2-1]
-#             dist = real_bond[i]
-#             cont = E_stret_lt[i]
-
-#             print(f"{e1:^2} {e1_s:^2} {'......'} {e2:^2} {e2_s:^2} {dist:^15.4f} {cont:^15.4f}")
-#             i += 1
-#         print("Total stretching energy is",sum(E_stret_lt))
-
-#     bonds_format(bonds_m, atoms, real_bonds, E_stret_list)
-
-
-#     def angle_format(theta_a_p,angle_list_p,atoms_p):
-#         print(" ")
-#         print("  ")
-#         print(f"{'·································'.center(60)}")
-#         print(f"{'···        Angle matrix       ···'.center(60)}")
-#         print(f"{'·································'.center(60)}")
-#         print(" ")
-#         print("  ")
-#         print(f"{'Bonded centers':^20} {'Angle (radians)':^10} {'Angle (degrees)':^10} {'Energy contribution (kcal/mol)':^10}")
-#         print("·" * 70)
-
-#         for i in range(len(theta_a)):
-#             e1 = int(angle_list_p[i*3])
-#             e2 = int(angle_list_p[i*3+1])
-#             e3 = int(angle_list_p[i*3+2])
-#             e1_s = atoms_p[e1-1]
-#             e2_s = atoms_p[e2-1]
-#             e3_s = atoms_p[e3-1]
-#             ang = theta_a_p[i]
-#             cont = E_b_list[i]
-
-#             print(f"{e2:^2} {e2_s:^2} {'  ---  '} {e1:^2} {e1_s:^2} {'  ---  '} {e3:^2} {e3_s:^2} {ang:^15.4f} {cont:^15.4f}")
-#         print("Total bending energy is", sum(E_b_list))
-#     angle_format(theta_a, angle_list, atoms)
-
-
-#     def dihe_format():
-#         print(" ")
-#         print("  ")
-#         print(f"{'·································'.center(60)}")
-#         print(f"{'···       Dihedral matrix     ···'.center(60)}")
-#         print(f"{'·································'.center(60)}")
-#         print(" ")
-#         print("  ")
-#         print(f"{'Bonded centers':^20} {'Angle (radians)':^10} {'Angle (degrees)':^10} {'Energy contribution (kcal/mol)':^10}")
-#         print("·" * 70)
-#         for dihedral in range(len(dihedral_mat)):
-#             # angle_radians = f"{phi_lt[dihedral]:.4f}".center(20)
-#             angle_degrees = f"{phi_lt[dihedral]:.4f}".center(15)
-#             energy_contribution = f"{E_dihe_lt[dihedral]:.4f}".center(20)
-
-#             print(f"{dihedral_mat[dihedral][0]:^5} -- {dihedral_mat[dihedral][1]:^5} -- {dihedral_mat[dihedral][2]:^5} -- {dihedral_mat[dihedral][3]:^5} {angle_degrees} {energy_contribution}")
-#         print("There are", len(dihedral_mat), "dihedral angles")
-#         print("The contribution to the energy is", E_tot_dihedral)
-#     dihe_format()
-
-
-#     def vdw_format():
-#         print(" ")
-#         print("  ")
-#         print(f"{'·································'.center(60)}")
-#         print(f"{'···         VDW matrix       ···'.center(60)}")
-#         print(f"{'·································'.center(60)}")
-#         print(" ")
-#         print("  ")
-#         print(f"{'Not bonded centers':^20} {'Distance (A)':^10} {'Energy contribution (kcal/mol)':^10}")
-#         print("·" * 70)
-#         for pair in range(len(pair_dvw)):
-#             # angle_radians = f"{phi_lt[dihedral]:.4f}".center(20)
-#             distance = f"{pair_distance[pair]:.4f}".center(15)
-#             energy_cont = f"{E_vdw_list[pair]:.4f}".center(20)
-
-#             print(f"{pair_dvw[pair][0]} {atoms[int(pair_dvw[pair][0])-1]:^5} -- {pair_dvw[pair][1]} {atoms[int(pair_dvw[pair][1])-1]:^5}  {distance} {energy_cont}")
-#         # print("There are", len(distance_pair), "vdw pairs")
-#         print("The VDW contribution to the energy is", E_vdw_tot)
-#     vdw_format()
