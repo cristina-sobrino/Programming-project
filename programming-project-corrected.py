@@ -11,15 +11,13 @@ import time
 import numpy as np
 from numpy import linalg
 
-# from typing import List, Tuple
-# import sys
 
 #···································
 #······  READING THE INPUT   ·······
 #···································
 
-name = "cholestane.mol2"
 
+name = input("Please, write the name of the file:")
 
 
 def read_file(archivo):
@@ -1221,7 +1219,7 @@ with open(output_file2, 'w', encoding='utf-8') as file, open('opt.molden', 'w', 
     print("Potential energy at input structure", f"{ene_tot(coord_n0):15.6f}", "Kcal/mol", file=file)
     print(file=file)
 
-    while grms > 0.001 and j < 5    00:  #max 200 optimization cycles
+    while grms > 0.001 and j < 500:  #max 200 optimization cycles
 
         print("·"*30, file=file)
         print("······· Cycle number", j+1,"·······", file=file)
