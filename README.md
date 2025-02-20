@@ -1,4 +1,4 @@
-This is a program for geometry optimizations both in internal and cartesian coordinates.
+This is a program for geometry optimizations of saturated hydrocarbons both in internal and cartesian coordinates using a force field.
 
 # Theory
 Geometry optimization is the process of finding atomic coordinates that minimize the potential energy of a molecular system. This corresponds to solving: 
