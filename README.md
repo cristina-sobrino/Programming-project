@@ -12,7 +12,7 @@ where V(r) is the potential energy as a function of atomic coordinates $r$.
 where α is a step size parameter.
 The parameter α is used so that V(r_k + αp_k) reaches a minimum along p_k. This is known as performing a line search. A commonly-used requirement for a rough line search is that α should satisfy the so-called "Wolfe rules". In this code it is only implemented the first rule, which ensures that the energy in the new geometry becomes significantly lower:
 
-<img src="https://latex.codecogs.com/svg.latex?V(r_k+\alpha%20p_k)%20%3C=%20V(r_k)%20+%20c_1%20\alpha%20p_k%20\cdot%20\nabla%20V(r_k)" alt="Wolfe condition">
+<img src="https://latex.codecogs.com/svg.latex?V(r_k+\alpha%20p_k)%20\leq%20V(r_k)%20+%20c_1%20\alpha%20p_k%20\cdot%20\nabla%20V(r_k)" alt="Wolfe condition">
 
 ### 2. BFGS Quasi-Newton Method
    The Broyden-Fletcher-Goldfarb-Shanno (BFGS) algorithm is a quasi-Newton method that improves optimization efficiency by approximating the Hessian matrix iteratively. The Hessian update follows:
