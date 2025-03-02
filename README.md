@@ -14,8 +14,8 @@ The parameter α is used so that V(r_k + αp_k) reaches a minimum along p_k. Thi
 
 <img src="https://latex.codecogs.com/svg.latex?V(r_k+\alpha%20p_k)%20%3C=%20V(r_k)%20+%20c_1%20\alpha%20p_k%20\cdot%20\nabla%20V(r_k)" alt="Wolfe condition">
 
-### 3. BFGS Quasi-Newton Method
-   The Broyden-Fletcher-Goldfarb-Shanno (BFGS) algorithm is a quasi-Newton method that improves optimization efficiency by approximating the Hessian matrix (second derivatives of the energy function) iteratively. The Hessian update follows:
+### 2. BFGS Quasi-Newton Method
+   The Broyden-Fletcher-Goldfarb-Shanno (BFGS) algorithm is a quasi-Newton method that improves optimization efficiency by approximating the Hessian matrix iteratively. The Hessian update follows:
    
 <img src="https://latex.codecogs.com/svg.latex?B_{k+1}%20=%20B_k%20+%20\frac{y_k%20\otimes%20y_k}{y_k%20\cdot%20s_k}%20-%20\frac{w_k%20\otimes%20w_k}{s_k%20\cdot%20w_k}" alt="BFGS update equation">
 
